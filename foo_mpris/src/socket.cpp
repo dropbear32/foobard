@@ -181,8 +181,6 @@ DWORD __stdcall MPRIS::watchSocket(LPVOID ptr)
             strcpy(command, command_buf);
             free(command_buf);
 
-            LOG("new packet '%s'", input);
-
 #define MPRIS_COMMAND(cmd, str, call)      \
     if (!strcmp(cmd, str))                 \
     {                                      \
@@ -371,19 +369,19 @@ DWORD __stdcall MPRIS::watchSocket(LPVOID ptr)
 
                         playback_control::get()->get_now_playing(p_track);
                         p_track->format_title(NULL, p_out, md5Format, NULL);
-                        char slash_id[34] = "/";
-                        strcat(slash_id, p_out.c_str());
-                        if (strcmp(track_id, slash_id))
+                        char current_id[34];
+                        strcpy(current_id, p_out.c_str());
+                        if (strcmp(track_id, current_id))
                         {
-                            LOG("Tried to seek in non-current track ('%s' != '%s')", track_id, p_out.c_str());
+                            LOG("Tried to seek in non-current track ('%s' != '%s')", track_id, current_id);
                             return;
                         }
 
                         playback_control::get()->playback_seek((double)offset / USEC_PER_SEC);
-                        free(track_id);
                     },
                     abortCallback);
 
+                free(track_id);
                 ubjson_ctx_free(&ctx);
             }
         }
