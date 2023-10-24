@@ -280,7 +280,7 @@ DWORD __stdcall MPRIS::watchSocket(LPVOID ptr)
                         p_track->format_title(NULL, p_out, titleFormat, NULL);
                         ubjson_ctx_add_kv_pair_string(&send_ctx, "title", p_out.c_str());
                         p_track->format_title(NULL, p_out, trackNumberFormat, NULL);
-                        ubjson_ctx_add_kv_pair_int16(&send_ctx, "track_number", atoi(p_out.c_str()));
+                        ubjson_ctx_add_kv_pair_int32(&send_ctx, "track_number", atoi(p_out.c_str()));
                     },
                     abortCallback);
                 ubjson_ctx_render_creation(&send_ctx);

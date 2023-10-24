@@ -278,7 +278,7 @@ int foobar2000_Metadata(sd_bus *bus,
 
     char *date = NULL;
     char *title = NULL;
-    int16_t track_number;
+    int32_t track_number;
 
     struct ubjson_ctx ctx;
     ubjson_ctx_init(&ctx, buf, recv_size);
@@ -336,14 +336,14 @@ int foobar2000_Metadata(sd_bus *bus,
     KEY_CHECK("title");
     ubjson_ctx_next_value(&ctx);
 
-    ubjson_ctx_read_kv_pair(&ctx, &key, &track_number, UBJSON_TYPE_INT16);
+    ubjson_ctx_read_kv_pair(&ctx, &key, &track_number, UBJSON_TYPE_INT32);
     KEY_CHECK("track_number");
 #undef KEY_CHECK
 
     sd_bus_message_open_container(reply, 'a', "{sv}");
 
     sd_bus_message_append(reply, "{sv}", "mpris:trackid", "o", id);
-    sd_bus_message_append(reply, "{sv}", "mpris:length", "x", &length);
+    sd_bus_message_append(reply, "{sv}", "mpris:length", "x", length);
     sd_bus_message_append(reply, "{sv}", "mpris:artUrl", "s", art_url);
     sd_bus_message_append(reply, "{sv}", "mpris:album", "s", album);
 
@@ -359,7 +359,7 @@ int foobar2000_Metadata(sd_bus *bus,
 
     sd_bus_message_append(reply, "{sv}", "xesam:date", "s", date);
     sd_bus_message_append(reply, "{sv}", "xesam:title", "s", title);
-    sd_bus_message_append(reply, "{sv}", "xesam:trackNumber", "n", &track_number);
+    sd_bus_message_append(reply, "{sv}", "xesam:trackNumber", "i", track_number);
 
     sd_bus_message_close_container(reply);
 
