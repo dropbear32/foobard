@@ -137,6 +137,7 @@ bool ubjson_ctx_render_value(struct ubjson_ctx *ctx, struct ubjson_value *value)
     case UBJSON_TYPE_OBJECT:
         return ubjson_ctx_render_object(ctx, value->v.object);
     case UBJSON_TYPE_HIGHPRECISION:
+    default:
         return false;
     }
 }
